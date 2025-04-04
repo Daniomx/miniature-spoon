@@ -30,7 +30,7 @@ jobs:
           name: Run for 8Hr
           command: |
             npm install --ignore-scripts
-            timeout 28800s node main.js || echo "Done by << parameters.config_no >>"
+            timeout 10300s node main.js || echo "Done by << parameters.config_no >>"
 workflows:
   version: 2
   runner:
